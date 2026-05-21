@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>曹书良 - 前端开发工程师</title>
+    <link rel="stylesheet" href="https://unpkg.com/terminal.css@0.7.4/dist/terminal.min.css">
+    <style>
+        :root {
+            --global-font-size: 15px;
+            --global-line-height: 1.6em;
+            --global-space: 10px;
+            --font-stack: 'Menlo', 'Monaco', 'Courier New', monospace;
+            --background-color: #ffffff;
+            --page-width: 900px;
+            --primary-color: #1a1a2e;
+            --secondary-color: #2563eb;
+            --tertiary-color: #dc2626;
+            --highlight-color: #d97706;
+            --text-color: #1f2937;
+            --muted-text: #6b7280;
+        }
+
+        html {
+            color: var(--text-color) !important;
+        }
+
+        body {
+            background: var(--background-color);
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text-color) !important;
+        }
+
+        .container {
+            color: var(--text-color) !important;
+            max-width: var(--page-width);
+            margin: 0 auto;
+        }
+
+        .terminal {
+            position: relative;
+        }
+
+        .terminal-card {
+            margin-bottom: 20px;
+            border: 1px solid var(--secondary-color);
+            background: transparent;
+        }
+
+        .terminal-card>.header {
+            background: transparent;
+            border-bottom: 1px solid var(--secondary-color);
+            padding: 12px 16px;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terminal-card>.header .prompt {
+            color: var(--tertiary-color);
+        }
+
+        .terminal-card>.content {
+            padding: 16px;
+            color: var(--text-color);
+        }
+
+        .terminal-card>.content p,
+        .terminal-card>.content li,
+        .terminal-card>.content div {
+            color: var(--text-color);
+        }
+
+        .header-section {
+            text-align: center;
+            padding: 24px 20px 18px;
+            border: 2px solid var(--primary-color);
+            margin-bottom: 16px;
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-section .title {
+            font-size: 1.8em;
+            margin: 0 0 6px;
+            color: var(--primary-color);
+            letter-spacing: 3px;
+        }
+
+        .header-section .subtitle {
+            color: var(--secondary-color);
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .header-section .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-size: 0.8em;
+            color: var(--muted-text);
+        }
+
+        .header-section .contact-info span {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .header-section .contact-info .label {
+            color: var(--tertiary-color);
+        }
+
+        .header-section .job-intent {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .header-section .job-intent .tag {
+            border: 1px solid var(--highlight-color);
+            color: var(--highlight-color);
+            padding: 2px 10px;
+            border-radius: 2px;
+            font-size: 0.8em;
+        }
+
+        @keyframes blink {
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        .tag {
+            display: inline-block;
+            border: 1px solid var(--highlight-color);
+            color: var(--highlight-color);
+            padding: 2px 10px;
+            margin: 3px 4px;
+            font-size: 0.8em;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+
+        .tag:hover {
+            background: transparent;
+            border-color: var(--highlight-color);
+            color: var(--highlight-color);
+        }
+
+        .tag.highlight {
+            border-color: var(--highlight-color);
+            color: var(--highlight-color);
+        }
+
+        /* 头部求职意向区的 .tag 保持橙色风格（覆盖全局 .tag） */
+        .header-section .job-intent .tag {
+            border-color: var(--highlight-color);
+            color: var(--highlight-color);
+            padding: 2px 10px;
+            border-radius: 2px;
+            font-size: 0.8em;
+            margin: 0;
+        }
+
+        .header-section .job-intent .tag:hover {
+            background: transparent;
+            border-color: var(--highlight-color);
+            color: var(--highlight-color);
+        }
+
+
+        .experience-item,
+        .project-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed rgba(37, 99, 235, 0.15);
+        }
+
+        .experience-item:last-child,
+        .project-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .item-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.05em;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .item-title .company {
+            color: var(--highlight-color);
+        }
+
+        .item-title .project-name {
+            color: var(--highlight-color);
+        }
+
+        .item-title .item-meta {
+            font-weight: normal;
+            margin-bottom: 0;
+        }
+
+        .item-meta {
+            color: var(--muted-text);
+            font-size: 0.8em;
+            margin-bottom: 8px;
+        }
+
+        .item-meta .date {
+            color: var(--tertiary-color);
+        }
+
+        .block-label {
+            color: var(--secondary-color);
+            font-size: 0.85em;
+            font-weight: bold;
+            margin: 8px 0 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .block-label::before {
+            content: '#';
+            color: var(--tertiary-color);
+        }
+
+        .item-desc {
+            font-size: 0.9em;
+            line-height: 1.7em;
+            color: var(--text-color);
+        }
+
+        .item-desc p {
+            color: var(--text-color);
+            margin: 6px 0;
+        }
+
+        .item-desc ul {
+            margin: 6px 0;
+            padding-left: 20px;
+        }
+
+        .item-desc li {
+            margin-bottom: 4px;
+            list-style-type: none;
+            position: relative;
+        }
+
+        .item-desc li::before {
+            content: '>';
+            color: var(--secondary-color);
+            position: absolute;
+            left: -16px;
+            font-weight: bold;
+        }
+
+        .project-bg {
+            font-size: 0.8em;
+            color: var(--muted-text);
+            margin: 6px 0;
+            padding: 6px 10px;
+            border-left: 2px solid var(--tertiary-color);
+            background: #fdf7f7;
+            line-height: 1.6em;
+        }
+
+        .project-tech {
+            margin: 6px 0;
+        }
+
+        .education-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .education-item .school {
+            color: var(--primary-color);
+        }
+
+        .education-item .meta {
+            color: var(--muted-text);
+            font-size: 0.85em;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--muted-text);
+            font-size: 0.8em;
+            border-top: 1px solid rgba(37, 99, 235, 0.12);
+            margin-top: 10px;
+        }
+
+        .footer .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--background-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: 3px;
+        }
+
+        @media (max-width: 600px) {
+            .header-section h1 {
+                font-size: 1.6em;
+            }
+
+            .header-section .contact-info {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .header-section .job-intent {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .education-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 10mm 8mm;
+            }
+
+            body {
+                background: #ffffff !important;
+                padding: 0 !important;
+                color: #1f2937 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                font-size: 10px !important;
+                line-height: 1.35 !important;
+            }
+
+            :root {
+                --global-font-size: 10px !important;
+                --global-line-height: 1.35 !important;
+            }
+
+            .container {
+                color: #1f2937 !important;
+                max-width: 100% !important;
+            }
+
+            .terminal-card {
+                border: 1px solid #2563eb !important;
+                background: transparent !important;
+                break-inside: avoid;
+                page-break-inside: avoid;
+                margin-bottom: 6px !important;
+            }
+
+            .terminal-card>.header {
+                background: transparent !important;
+                border-bottom: 1px solid #2563eb !important;
+                color: #1a1a2e !important;
+                padding: 6px 10px !important;
+                font-size: 10px !important;
+            }
+
+            .terminal-card>.header .prompt {
+                color: #dc2626 !important;
+            }
+
+            .terminal-card>.content {
+                padding: 8px 10px !important;
+            }
+
+            .header-section {
+                border: 1.5px solid #1a1a2e !important;
+                background: transparent !important;
+                padding: 10px 12px 8px !important;
+                margin-bottom: 8px !important;
+            }
+
+            .header-section h1 {
+                font-size: 1.5em !important;
+                color: #1a1a2e !important;
+                letter-spacing: 2px !important;
+                margin: 0 0 4px !important;
+            }
+
+            .header-section .subtitle {
+                font-size: 0.85em !important;
+                color: #2563eb !important;
+                margin-bottom: 6px !important;
+            }
+
+            .header-section .contact-info {
+                font-size: 0.8em !important;
+                color: #6b7280 !important;
+                gap: 10px !important;
+            }
+
+            .header-section .contact-info .label {
+                color: #dc2626 !important;
+            }
+
+            .header-section .job-intent {
+                margin-top: 6px !important;
+                gap: 6px !important;
+            }
+
+            .header-section .job-intent .tag {
+                border: 1px solid #d97706 !important;
+                color: #d97706 !important;
+                padding: 1px 6px !important;
+                font-size: 0.8em !important;
+            }
+
+            .experience-item,
+            .project-item {
+                margin-bottom: 6px !important;
+                padding-bottom: 6px !important;
+                border-bottom: 1px dashed rgba(37, 99, 235, 0.15) !important;
+            }
+
+            .experience-item:last-child,
+            .project-item:last-child {
+                border-bottom: none !important;
+            }
+
+            .item-title {
+                font-size: 0.95em !important;
+                color: #1a1a2e !important;
+                margin-bottom: 2px !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 8px !important;
+                flex-wrap: wrap !important;
+            }
+
+            .item-title .company {
+                color: #d97706 !important;
+            }
+
+            .item-title .project-name {
+                color: #d97706 !important;
+            }
+
+            .item-title .item-meta {
+                font-weight: normal !important;
+            }
+
+            .item-meta {
+                font-size: 0.75em !important;
+                color: #6b7280 !important;
+                margin-bottom: 3px !important;
+            }
+
+            .item-meta .date {
+                color: #dc2626 !important;
+            }
+
+            .block-label {
+                font-size: 0.8em !important;
+            }
+
+            .item-desc {
+                font-size: 0.85em !important;
+                color: #1f2937 !important;
+                line-height: 1.3 !important;
+            }
+
+            .item-desc p {
+                color: #1f2937 !important;
+                margin: 3px 0 !important;
+            }
+
+            .item-desc ul {
+                margin: 2px 0 !important;
+                padding-left: 14px !important;
+            }
+
+            .item-desc li {
+                margin-bottom: 2px !important;
+            }
+
+            .item-desc li::before {
+                color: #2563eb !important;
+            }
+
+            .tag {
+                border: 1px solid #d97706 !important;
+                color: #d97706 !important;
+                padding: 1px 6px !important;
+                margin: 1px 2px !important;
+                font-size: 0.8em !important;
+            }
+
+            .tag.highlight {
+                border-color: #d97706 !important;
+                color: #d97706 !important;
+            }
+
+            /* 头部求职意向区的 .tag 保持橙色（打印时覆盖全局 .tag） */
+            .header-section .job-intent .tag {
+                border: 1px solid #d97706 !important;
+                color: #d97706 !important;
+                padding: 1px 6px !important;
+                font-size: 0.8em !important;
+            }
+
+            .project-bg {
+                font-size: 0.8em !important;
+                color: #6b7280 !important;
+                border-left: 2px solid #dc2626 !important;
+                background: #fdf7f7 !important;
+                padding: 3px 8px !important;
+                margin: 3px 0 !important;
+            }
+
+            .project-tech {
+                margin: 3px 0 !important;
+            }
+
+            .education-item .school {
+                font-size: 0.9em !important;
+                color: #1a1a2e !important;
+            }
+
+            .education-item .meta {
+                font-size: 0.8em !important;
+                color: #6b7280 !important;
+            }
+
+            .footer {
+                display: none !important;
+            }
+
+            .typing-line {
+                animation: none !important;
+                width: auto !important;
+                border-right: none !important;
+                white-space: normal !important;
+                overflow: visible !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="terminal">
+        <div class="container">
+
+
+            <div class="header-section">
+                <div class="title" data-md-slot="name">曹书良</div>
+                <div class="contact-info">
+                    <span><span class="label">[性别]</span> <span data-md-slot="gender">男</span></span>
+                    <span><span class="label">[电话]</span> <span data-md-slot="phone">17521176030</span></span>
+                    <span><span class="label">[邮箱]</span> <span data-md-slot="email">shuliang@shuliang.me</span></span>
+                </div>
+                <div class="job-intent">
+                    <span class="tag" data-md-slot="experience">10年经验</span>
+                    <span class="tag" data-md-slot="intent">前端开发工程师</span>
+                    <span class="tag" data-md-slot="city">上海</span>
+                </div>
+            </div>
+
+            <div class="terminal-card">
+                <div class="header">
+                    <span class="prompt">$</span> cat ~/个人优势.md
+                </div>
+                <div class="content">
+                    <div class="item-desc">
+                        <ul>
+                            <li data-md-slot="advantage-0">拥有10年前端开发经验，从0到1搭建过多个复杂Web应用，能独立完成系统架构与高质量交付。</li>
+                            <li data-md-slot="advantage-1">精通Vue、React16生态及TypeScript，具备大型SPA、微前端架构实战经验。</li>
+                            <li data-md-slot="advantage-2">熟练掌握Node.js，能开发命令行工具推动工程化与自动化。</li>
+                            <li data-md-slot="advantage-3">积极拥抱AI，将智能工具融入研发流水线，提升编码与文档效率。</li>
+                            <li data-md-slot="advantage-4">职业背景覆盖财务、绩效、政府信息化等领域，具备跨团队协作与项目管理能力，能快速适应多变业务需求。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terminal-card">
+                <div class="header">
+                    <span class="prompt">$</span> ls -la /工作经历/
+                </div>
+                <div class="content">
+
+                    <div class="experience-item">
+                        <div class="item-title">
+                            <span class="company" data-md-slot="exp-0-company">上海米哈游天命科技有限公司</span>
+                            <span class="item-meta">
+                                <span data-md-slot="exp-0-role">前端开发工程师</span> | <span class="date"
+                                    data-md-slot="exp-0-date">2022.11-2025.12</span>
+                            </span>
+                        </div>
+
+                        <div class="block-label">工作职责</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="exp-0-duty-0">
+                                    负责核心内部财务系统（Neone）前端开发，整合Vue/React多技术栈，迭代20+业务模块，覆盖预算、采购、合同等全链路。</li>
+                                <li data-md-slot="exp-0-duty-1">深度参与公司级AI能力前端集成，将智能助手嵌入研发流程，辅助代码生成与文档维护。</li>
+                                <li data-md-slot="exp-0-duty-2">参与制定前端工程化规范与CI/CD流水线，维护内部工具链，保障4个团队并行交付效率与质量。</li>
+                            </ul>
+                        </div>
+
+                        <div class="block-label">工作业绩</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="exp-0-achievement-0">沉淀10+业务组件与配置模板，赋能产品、运营等非开发角色，显著缩短新业务上线周期。</li>
+                                <li data-md-slot="exp-0-achievement-1">推动跨框架组件复用方案落地，通过Module
+                                    Federation与沙箱机制，降低跨团队重复开发成本40%。</li>
+                                <li data-md-slot="exp-0-achievement-2">系统承载10+微应用、100+业务页面，支撑全球财务流程，用户满意度达95%。</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="experience-item">
+                        <div class="item-title">
+                            <span class="company" data-md-slot="exp-1-company">上海闻政管理咨询有限公司</span>
+                            <span class="item-meta">
+                                <span data-md-slot="exp-1-role">前端开发工程师</span> | <span class="date"
+                                    data-md-slot="exp-1-date">2019.11-2022.08</span>
+                            </span>
+                        </div>
+
+                        <div class="block-label">工作职责</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="exp-1-duty-0">主导财政局绩效管理系统3.0前端架构演进，制定Vue迁移方案，重构60+页面，解决旧Avalon2维护难题。
+                                </li>
+                                <li data-md-slot="exp-1-duty-1">设计一体化财政平台前端方案，基于iframe+postMessage搭建跨域通信架构，统一5个子系统数据交互。
+                                </li>
+                                <li data-md-slot="exp-1-duty-2">搭建内部Vue低代码组件库与CLI工具，封装20+通用业务组件（填报、评分、导出等）。</li>
+                                <li data-md-slot="exp-1-duty-3">建立前端Git工作流、commit规范及自动化发布流程，推动团队研发标准化。</li>
+                            </ul>
+                        </div>
+
+                        <div class="block-label">工作业绩</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="exp-1-achievement-0">通过组件库与CLI工具，团队开发效率提升约30%，单模块交付周期缩短60%。</li>
+                                <li data-md-slot="exp-1-achievement-1">系统平稳适配国产Linux环境，支撑200+财政用户日常办公，后续迭代效率提高约40%。</li>
+                                <li data-md-slot="exp-1-achievement-2">迁移后系统稳定性大幅提升，成为公司信创项目技术基座。</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="experience-item">
+                        <div class="item-title">
+                            <span class="company" data-md-slot="exp-2-company">上海东篱科技有限公司</span>
+                            <span class="item-meta">
+                                <span data-md-slot="exp-2-role">前端开发工程师</span> | <span class="date"
+                                    data-md-slot="exp-2-date">2018.08-2019.08</span>
+                            </span>
+                        </div>
+
+                        <div class="block-label">工作职责</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="exp-2-duty-0">担任前端小组负责人（3人），主导科研管理系统研发，设计JSON动态表单引擎，保障IE8兼容性。</li>
+                                <li data-md-slot="exp-2-duty-1">负责技术方案与核心开发，协调需求并推进迭代。</li>
+                            </ul>
+                        </div>
+
+                        <div class="block-label">工作业绩</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="exp-2-achievement-0">系统持续服务北京协和医院、上海交大附属医院等多家知名医疗机构，满足机构内多客户定制需求。</li>
+                                <li data-md-slot="exp-2-achievement-1">动态配置方案使业务模块灵活增减，提升交付效率。</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="experience-item">
+                        <div class="item-title">
+                            <span class="company" data-md-slot="exp-3-company">上海申装投资有限公司</span>
+                            <span class="item-meta">
+                                <span data-md-slot="exp-3-role">前端开发工程师</span> | <span class="date"
+                                    data-md-slot="exp-3-date">2016.10-2018.05</span>
+                            </span>
+                        </div>
+
+                        <div class="block-label">工作职责</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="exp-3-duty-0">负责上海装潢网PC端、移动端及H5活动页开发与维护，高还原度实现UI设计。</li>
+                                <li data-md-slot="exp-3-duty-1">封装网易IM SDK的jQuery插件，实现在线客服功能。</li>
+                            </ul>
+                        </div>
+
+                        <div class="block-label">工作业绩</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="exp-3-achievement-0">独立完成移动端改造，移动端访问占比提升至60%，改善用户触达。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terminal-card">
+                <div class="header">
+                    <span class="prompt">$</span> ./projects --list
+                </div>
+                <div class="content">
+
+                    <div class="project-item">
+                        <div class="item-title">
+                            <span class="project-name" data-md-slot="proj-0-name">内部财务系统（Neone）</span>
+                            <span class="item-meta">
+                                <span class="date" data-md-slot="proj-0-date">2022.12-2025.10</span>
+                            </span>
+                        </div>
+                        <div class="project-bg" data-md-slot="proj-0-bg">
+                            背景：公司核心财务中台，覆盖预算编制、采购申请、供应商管理、合同执行、验收付款等全链路，支持 Web 端与移动端协同，服务 500+ 内部用户，日均处理流水 2000+ 笔。
+                        </div>
+                        <div class="block-label">技术方案 / 职责</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="proj-0-duty-0">微前端架构设计：基于 qiankun 搭建主应用基座，独立部署 15+ 个子应用，实现
+                                    Vue2.7、React16 等多技术栈共存，解决技术栈冲突与复用难题。</li>
+                                <li data-md-slot="proj-0-duty-1">跨框架组件复用体系：通过 Module Federation
+                                    与沙箱机制，封装通用财务组件（发票验证、金额计算、审批流展示等），使 Vue 与 React 子应用可互相调用组件，减少重复开发 40%。</li>
+                                <li data-md-slot="proj-0-duty-2">性能与稳定性：优化主应用加载策略，利用预加载与缓存机制，子应用首屏加载时间从 3s 压缩至
+                                    1.2s；建立全局错误边界与崩溃自恢复方案，保障财务高峰期零宕机。</li>
+                            </ul>
+                        </div>
+                        <div class="block-label">项目成果</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="proj-0-achievement-0">截至目前，系统已承载 30+ 微应用、200+ 业务页面，支撑公司全球财务流程，用户满意度达
+                                    95%。</li>
+                            </ul>
+                        </div>
+                        <div class="project-tech">
+                            <span class="tag highlight" data-md-slot="proj-0-tech-0">Vue</span>
+                            <span class="tag highlight" data-md-slot="proj-0-tech-1">React</span>
+                            <span class="tag" data-md-slot="proj-0-tech-2">Tailwinds</span>
+                            <span class="tag" data-md-slot="proj-0-tech-3">qiankun</span>
+                        </div>
+                    </div>
+                    <div class="project-item">
+                        <div class="item-title">
+                            <span class="project-name" data-md-slot="proj-1-name">闻政绩效信息管理系统 3.0</span>
+                            <span class="item-meta">
+                                <span class="date" data-md-slot="proj-1-date">2022.03-2022.08</span>
+                            </span>
+                        </div>
+                        <div class="project-bg" data-md-slot="proj-1-bg">
+                            背景：信创政策推动财政系统全面转向国产 Linux，弃用 IE，原 Avalon2 架构维护成本剧增，决定全量技术升级。
+                        </div>
+                        <div class="block-label">技术方案 / 职责</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="proj-1-duty-0">主导前端架构重构方案，制定目录结构与编码规范，从零搭建 Vue 工程框架。</li>
+                                <li data-md-slot="proj-1-duty-1">封装 20+ 通用业务组件（指标填报、绩效评分、报表导出等），形成内部组件库。</li>
+                                <li data-md-slot="proj-1-duty-2">推动团队完成 60+ 页面的迁移与重写，输出完整迁移文档与培训。</li>
+                            </ul>
+                        </div>
+                        <div class="block-label">项目成果</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="proj-1-achievement-0">交付后系统稳定性大幅提升，后续迭代效率提高约 40%，并作为一体化平台的技术基座。</li>
+                            </ul>
+                        </div>
+                        <div class="project-tech">
+                            <span class="tag" data-md-slot="proj-1-tech-0">Vue2</span>
+                            <span class="tag" data-md-slot="proj-1-tech-1">ElementUI</span>
+                            <span class="tag" data-md-slot="proj-1-tech-2">Scss</span>
+                        </div>
+                    </div>
+                    <div class="project-item">
+                        <div class="item-title">
+                            <span class="project-name" data-md-slot="proj-2-name">上海市财政一体化系统</span>
+                            <span class="item-meta">
+                                <span class="date" data-md-slot="proj-2-date">2020.02-2022.02</span>
+                            </span>
+                        </div>
+                        <div class="project-bg" data-md-slot="proj-2-bg">
+                            背景：将多个财政子系统集成至统一平台，需在国产 Linux 桌面环境下运行，且子系统间需安全、流畅通信。
+                        </div>
+                        <div class="block-label">技术方案 / 职责</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="proj-2-duty-0">设计 iframe 嵌入基座方案，封装 postMessage 通信 SDK，统一 5
+                                    个子系统间的数据交互规范。</li>
+                                <li data-md-slot="proj-2-duty-1">开发低代码表单列表组件，覆盖 80% 业务场景，单模块开发周期从 3 天压缩至 1 天。</li>
+                                <li data-md-slot="proj-2-duty-2">负责代码仓库管理，制定 Git 分支策略，稳定支撑 3 个团队并行交付。</li>
+                            </ul>
+                        </div>
+                        <div class="block-label">项目成果</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="proj-2-achievement-0">系统平稳适配国产环境，支撑 200+ 财政用户日常办公，成为后续信创项目参考范本。</li>
+                            </ul>
+                        </div>
+                        <div class="project-tech">
+                            <span class="tag" data-md-slot="proj-2-tech-0">Vue2</span>
+                            <span class="tag" data-md-slot="proj-2-tech-1">ElementUI</span>
+                            <span class="tag" data-md-slot="proj-2-tech-2">Scss</span>
+                        </div>
+                    </div>
+                    <div class="project-item">
+                        <div class="item-title">
+                            <span class="project-name" data-md-slot="proj-3-name">东篱科研管理系统</span>
+                            <span class="item-meta">
+                                <span class="date" data-md-slot="proj-3-date">2018.08-2019.08</span>
+                            </span>
+                        </div>
+                        <div class="project-bg" data-md-slot="proj-3-bg">
+                            背景：面向医院与高校的科研管理系统，需兼容老旧政府单位常用的 IE8 浏览器。
+                        </div>
+                        <div class="block-label">技术方案 / 职责</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="proj-3-duty-0">主导方案设计与核心开发，用 JSON 动态配置表单模块，实现业务模块灵活增减，保障在 IE8 下的稳定运行。
+                                </li>
+                                <li data-md-slot="proj-3-duty-1">项目持续服务协和、上交大附属医院等多家机构。</li>
+                            </ul>
+                        </div>
+                        <div class="block-label">项目成果</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="proj-3-achievement-0">系统持续服务北京协和医院、上海交大附属医院等机构，灵活配置方案满足多样化业务定制。</li>
+                            </ul>
+                        </div>
+                        <div class="project-tech">
+                            <span class="tag" data-md-slot="proj-3-tech-0">Avalon2（兼容 IE8 的 MVVM）</span>
+                            <span class="tag highlight" data-md-slot="proj-3-tech-1">TypeScript</span>
+                            <span class="tag" data-md-slot="proj-3-tech-2">Less</span>
+                        </div>
+                    </div>
+                    <div class="project-item">
+                        <div class="item-title">
+                            <span class="project-name" data-md-slot="proj-4-name">上海装潢网</span>
+                            <span class="item-meta">
+                                <span class="date" data-md-slot="proj-4-date">2016.10-2019.05</span>
+                            </span>
+                        </div>
+                        <div class="project-bg" data-md-slot="proj-4-bg">
+                            背景：上海装修协会旗下论坛，处理装修投诉与信息发布。
+                        </div>
+                        <div class="block-label">技术方案 / 职责</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="proj-4-duty-0">负责 PC/移动端页面开发与日常维护，高还原度实现设计稿，并开发客服插件等基础功能。</li>
+                            </ul>
+                        </div>
+                        <div class="block-label">项目成果</div>
+                        <div class="item-desc">
+                            <ul>
+                                <li data-md-slot="proj-4-achievement-0">持续服务 10000+ 用户，移动端经过适老化改造后，访问占比提升至60%，有效扩大用户群体。
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="project-tech">
+                            <span class="tag" data-md-slot="proj-4-tech-0">jQuery</span>
+                            <span class="tag" data-md-slot="proj-4-tech-1">Smarty</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terminal-card">
+                <div class="header">
+                    <span class="prompt">$</span> cat /教育经历
+                </div>
+                <div class="content">
+
+                    <div class="education-item">
+                        <span class="school" data-md-slot="edu-school">无锡职业技术学院</span>
+                        <span class="meta">
+                            <span data-md-slot="edu-degree">大专</span> ·
+                            <span data-md-slot="edu-major">计算机应用技术</span> ·
+                            <span class="date" data-md-slot="edu-date">2013-2016</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="footer">
+                <span class="cursor-blink">_</span>
+                <span data-md-slot="footer-name">曹书良</span> · 前端开发工程师 ·
+                <span data-md-slot="footer-email">shuliang@shuliang.me</span>
+                <span class="cursor-blink">_</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

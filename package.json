@@ -1,0 +1,18 @@
+{
+    "name": "shuliang.me",
+    "version": "1.0.0",
+    "description": "曹书良 - 前端开发工程师简历",
+    "private": true,
+    "scripts": {
+        "sync": "node sync.js",
+        "watch": "node sync.js --watch",
+        "rebuild": "node sync.js --rebuild",
+        "help": "node sync.js --help"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "dependencies": {
+        "cheerio": "^1.1.0"
+    }
+}
