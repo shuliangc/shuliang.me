@@ -40,7 +40,7 @@ npm run rebuild    # 强制完整重建 html
 
 ## 部署
 
-由 GitHub Pages 托管，部署源为 `main` 分支的 `/www` 目录，自定义域名指向 `shuliang.me`。
+由 GitHub Pages 托管，通过 GitHub Actions 直接将 `www/` 目录作为构建产物部署（Source: GitHub Actions），自定义域名 `shuliang.me`。
 
 ## License
 
